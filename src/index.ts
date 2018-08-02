@@ -59,21 +59,6 @@ const outerText: string = "ゆめちゃん★お誕生日★おめでとう★";
 let textAngle: number = 0;
 type TextTiming = [string, number];
 const textTimings: TextTiming[] = [
-    // ["～(´･ω･`～)", 30],
-    // ["(～´･ω･`)～", 30],
-    // ["o(ﾟ∇ﾟ*o)", 30],
-    // ["o(*ﾟ∇ﾟ*)o", 30],
-    // ["(o*ﾟ∇ﾟ)o", 30],
-    // ["(*ﾟ▽ﾟ*)", 30],
-    // ["ヽ(´▽｀)/", 30],
-    // ["♪┌(･｡･)┘♪", 30],
-    // ["♪└(･｡･)┐♪", 30],
-    // ["♪L(･_L)♪", 30],
-    // ["(ﾉ_･)ﾉ♪", 30],
-    // ["L(･_L)♪", 30],
-    // ["(ﾉ_･)ﾉ♪", 30],
-    // ["(ﾉ￣▽￣)ﾉ", 30], ["⌒(￣▽￣⌒)", 30], ["(￢￣▽￣)￢", 30],
-    // ["♪ヽ(=´▽`=)ﾉ♪", 30],
     ["♪ヾ(´▽｀*)ゝ", 30],
     [" ヾ(*´▽｀)ノ♪", 30],
     ["♪ヽ(´▽｀*)ゞ", 30],
@@ -90,7 +75,7 @@ function draw(): void {
     background.draw();
 
     // Draw the rotating text
-    context.font = "24px 'Tsukushi A Round Gothic'";
+    context.font = "24px sans-serif";
     context.fillStyle = "rgba(255, 255, 255, 0.9)";
     context.textAlign = "center";
     const radiansPerCharacter: number = (2 * Math.PI) / outerText.length;
