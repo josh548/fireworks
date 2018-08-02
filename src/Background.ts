@@ -1,4 +1,4 @@
-import { calculateDistance, Point } from "./Point";
+import { calculateDistance } from "./Firework";
 import { Star } from "./Star";
 
 import {
@@ -15,6 +15,8 @@ import {
 function clamp(x: number, min: number, max: number): number {
     return Math.min(Math.max(x, min), max);
 }
+
+type Point = [number, number];
 
 export class Background {
     private readonly context: CanvasRenderingContext2D;
@@ -35,13 +37,14 @@ export class Background {
             const randomX: number = Math.floor(Math.random() * this.context.canvas.width);
             const randomY: number =
                 Math.floor(Math.random() * (this.context.canvas.height - GROUND_HEIGHT));
-            const randomPoint: Point = new Point(
+            const randomPoint: Point = [
                 clamp(randomX, 20, this.context.canvas.width - 20),
                 clamp(randomY, 20, this.context.canvas.height - GROUND_HEIGHT - 20),
-            );
+            ];
             let usePoint: boolean = true;
             for (const existingPoint of points) {
-                if (calculateDistance(existingPoint, randomPoint) < STARS_MIN_DISTANCE_BETWEEN) {
+                if (calculateDistance(existingPoint[0], existingPoint[1],
+                        randomPoint[0], randomPoint[1]) < STARS_MIN_DISTANCE_BETWEEN) {
                     usePoint = false;
                     break;
                 }
@@ -58,7 +61,7 @@ export class Background {
         const randomPoints: Point[] = this.generateRandomPointsForStars();
         for (const point of randomPoints) {
             const radius: number = Math.ceil(Math.random() * STAR_MAX_SIZE);
-            this.stars.push(new Star(this.context, point.x, point.y, radius));
+            this.stars.push(new Star(this.context, point[0], point[1], radius));
         }
     }
 
