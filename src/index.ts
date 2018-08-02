@@ -13,13 +13,73 @@ import {
     PARTICLES_PER_FIREWORK,
 } from "./constants";
 
-const canvas: HTMLCanvasElement = document.querySelector("canvas") as HTMLCanvasElement;
+// tslint:disable-next-line:interface-name
+interface HTMLCanvasElementWithStream extends HTMLCanvasElement {
+    captureStream(): MediaStream;
+}
+
+// tslint:disable-next-line:interface-name
+interface DataEvent {
+    data: Blob;
+}
+
+declare class MediaRecorder {
+    constructor(stream: MediaStream, options: any);
+    public onstop(): void;
+    public ondataavailable(event: DataEvent): void;
+    public start(): void;
+    public stop(): void;
+}
+
+const canvas: HTMLCanvasElementWithStream =
+    document.querySelector("canvas") as HTMLCanvasElementWithStream;
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const context: CanvasRenderingContext2D = canvas.getContext("2d") as CanvasRenderingContext2D;
 context.lineCap = "round";
 context.lineJoin = "round";
+
+const stream: MediaStream = canvas.captureStream();
+const recordedBlobs: Blob[] = [];
+let mediaRecorder: MediaRecorder;
+
+function handleDataAvailable(event: DataEvent): void {
+    if (event.data && event.data.size > 0) {
+        recordedBlobs.push(event.data);
+    }
+}
+
+function handleStop(): void {
+    setTimeout(download, 100);
+}
+
+function startRecording(): void {
+    const options: any = { mimeType: "video/webm" };
+    mediaRecorder = new MediaRecorder(stream, options);
+    mediaRecorder.onstop = handleStop;
+    mediaRecorder.ondataavailable = handleDataAvailable;
+    mediaRecorder.start();
+}
+
+function stopRecording(): void {
+    mediaRecorder.stop();
+}
+
+function download(): void {
+    const blob: Blob = new Blob(recordedBlobs, { type: "video/webm" });
+    const url: string = window.URL.createObjectURL(blob);
+    const a: HTMLAnchorElement = document.createElement("a");
+    a.style.display = "none";
+    a.href = url;
+    a.download = "fireworks.webm";
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+    }, 100);
+}
 
 const background: Background = new Background(context);
 
@@ -66,6 +126,9 @@ const textTimings: TextTiming[] = [
 ];
 let textTimingIndex: number = 0;
 let framesSinceTransition: number = 0;
+
+const framesToRecord: number = 600;
+startRecording();
 
 function draw(): void {
     context.clearRect(0, 0, canvas.width, canvas.height);
@@ -121,7 +184,12 @@ function draw(): void {
     }
     particles = particles.filter((particle: Particle) => particle.currentFrame < particle.lifeSpan);
     frame++;
-    window.requestAnimationFrame(draw);
+
+    if (frame === framesToRecord) {
+        stopRecording();
+    } else {
+        window.requestAnimationFrame(draw);
+    }
 }
 
 draw();
