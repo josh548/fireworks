@@ -55,8 +55,17 @@ function createParticles(x: number, y: number): void {
     }
 }
 
-const text: string = "hello world ";
+const outerText: string = "hello world ";
 let textAngle: number = 0;
+type TextTiming = [string, number];
+const textTimings: TextTiming[] = [
+    ["what", 30],
+    ["a", 30],
+    ["wonderful", 30],
+    ["world", 30],
+];
+let textTimingIndex: number = 0;
+let framesSinceTransition: number = 0;
 
 function draw(): void {
     context.clearRect(0, 0, canvas.width, canvas.height);
@@ -64,20 +73,37 @@ function draw(): void {
         createFirework();
     }
     background.draw();
+
+    // Draw the rotating text
     context.font = "24px 'Tsukushi A Round Gothic'";
     context.fillStyle = "rgba(255, 255, 255, 0.9)";
-    const radiansPerCharacter: number = (2 * Math.PI) / text.length;
+    context.textAlign = "center";
+    const radiansPerCharacter: number = (2 * Math.PI) / outerText.length;
     context.save();
     context.translate(canvas.width / 2, (canvas.height - GROUND_HEIGHT) / 2);
     context.rotate(textAngle);
-    for (let i: number = 0; i < text.length; i++) {
+    for (let i: number = 0; i < outerText.length; i++) {
        context.save();
        context.rotate(i * radiansPerCharacter);
-       context.fillText(text.charAt(i), 0, -100);
+       context.fillText(outerText.charAt(i), 0, -100);
        context.restore();
     }
     context.restore();
     textAngle -= (2 * Math.PI) / 540;
+
+    // Draw the inner text
+    let currentTextTiming: TextTiming = textTimings[textTimingIndex];
+    if (framesSinceTransition >= currentTextTiming[1]) {
+        textTimingIndex++;
+        if (textTimingIndex >= textTimings.length) {
+            textTimingIndex = 0;
+        }
+        framesSinceTransition = 0;
+        currentTextTiming = textTimings[textTimingIndex];
+    }
+    context.fillText(currentTextTiming[0], canvas.width / 2, (canvas.height - GROUND_HEIGHT) / 2);
+    framesSinceTransition++;
+
     for (const firework of fireworks) {
         firework.update();
         firework.draw();
