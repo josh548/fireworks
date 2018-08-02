@@ -55,14 +55,29 @@ function createParticles(x: number, y: number): void {
     }
 }
 
-const outerText: string = "hello world ";
+const outerText: string = "ゆめちゃん★お誕生日★おめでとう★";
 let textAngle: number = 0;
 type TextTiming = [string, number];
 const textTimings: TextTiming[] = [
-    ["what", 30],
-    ["a", 30],
-    ["wonderful", 30],
-    ["world", 30],
+    // ["～(´･ω･`～)", 30],
+    // ["(～´･ω･`)～", 30],
+    // ["o(ﾟ∇ﾟ*o)", 30],
+    // ["o(*ﾟ∇ﾟ*)o", 30],
+    // ["(o*ﾟ∇ﾟ)o", 30],
+    // ["(*ﾟ▽ﾟ*)", 30],
+    // ["ヽ(´▽｀)/", 30],
+    // ["♪┌(･｡･)┘♪", 30],
+    // ["♪└(･｡･)┐♪", 30],
+    // ["♪L(･_L)♪", 30],
+    // ["(ﾉ_･)ﾉ♪", 30],
+    // ["L(･_L)♪", 30],
+    // ["(ﾉ_･)ﾉ♪", 30],
+    // ["(ﾉ￣▽￣)ﾉ", 30], ["⌒(￣▽￣⌒)", 30], ["(￢￣▽￣)￢", 30],
+    // ["♪ヽ(=´▽`=)ﾉ♪", 30],
+    ["♪ヾ(´▽｀*)ゝ", 30],
+    [" ヾ(*´▽｀)ノ♪", 30],
+    ["♪ヽ(´▽｀*)ゞ", 30],
+    [" ヽ(*´▽｀)ツ♪", 30],
 ];
 let textTimingIndex: number = 0;
 let framesSinceTransition: number = 0;
