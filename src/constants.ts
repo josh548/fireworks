@@ -20,5 +20,5 @@ export const PARTICLE_GRAVITY: number = 0.035;
 export const PARTICLE_HUE_VARIANCE: number = 30;
 export const PARTICLE_LIFE_SPAN_VARIANCE: number = 15;
 export const PARTICLE_PATH_LENGTH: number = 5;
-export const PARTICLE_RADIUS: number = 1;
-export const PARTICLES_PER_FIREWORK: number = 40;
+export const PARTICLE_RADIUS: number = 2;
+export const PARTICLES_PER_FIREWORK: number = 50;

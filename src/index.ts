@@ -18,9 +18,12 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const context: CanvasRenderingContext2D = canvas.getContext("2d") as CanvasRenderingContext2D;
+context.lineCap = "round";
+context.lineJoin = "round";
+
 const background: Background = new Background(context);
 
-function getRandomValueBetween(min: number, max: number): number {
+export function getRandomValueBetween(min: number, max: number): number {
     return Math.random() * (max - min) + min;
 }
 
@@ -32,7 +35,7 @@ function createFirework(): void {
     const startX: number = canvas.width / 2;
     const startY: number = canvas.height;
     const endX: number = getRandomValueBetween(0.1 * canvas.width, 0.9 * canvas.width);
-    const endY: number = getRandomValueBetween(0.1 * canvas.height, 0.6 * canvas.height);
+    const endY: number = getRandomValueBetween(0.1 * canvas.height, 0.5 * canvas.height);
     fireworks.push(new Firework(context, startX, startY, endX, endY));
 }
 
