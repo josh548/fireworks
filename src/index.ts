@@ -75,7 +75,7 @@ function draw(): void {
     background.draw();
 
     // Draw the rotating text
-    context.font = "24px 'Tsukushi A Round Gothic'";
+    context.font = "24px sans-serif";
     context.fillStyle = "rgba(255, 255, 255, 0.9)";
     context.textAlign = "center";
     const radiansPerCharacter: number = (2 * Math.PI) / outerText.length;
