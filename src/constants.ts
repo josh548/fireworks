@@ -3,7 +3,7 @@ export const SKY_GRADIENT_START_COLOR: string = "#020202";
 
 export const STAR_COLOR: string = "#FCFCFC";
 export const STAR_COUNT: number = 23;
-export const STAR_MAX_SIZE: number = 2;
+export const STAR_MAX_RADIUS: number = 5;
 export const STARS_MIN_DISTANCE_BETWEEN: number = 25;
 
 export const GROUND_COLOR: string = "#202020";

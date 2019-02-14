@@ -3,8 +3,7 @@ import {
     PARTICLE_GRAVITY,
     PARTICLE_PATH_LENGTH,
 } from "./constants";
-
-import { getRandomValueBetween } from ".";
+import { getRandomValueBetween } from "./utils";
 
 type Point = [number, number];
 

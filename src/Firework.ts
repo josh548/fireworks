@@ -1,8 +1,5 @@
 import { FIREWORK_RADIUS, FIREWORK_SPEED } from "./constants";
-
-export function calculateDistance(x1: number, y1: number, x2: number, y2: number): number {
-    return Math.sqrt(((x2 - x1) ** 2) + ((y2 - y1) ** 2));
-}
+import { calculateDistance } from "./utils";
 
 export class Firework {
     private readonly context: CanvasRenderingContext2D;

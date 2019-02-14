@@ -1,4 +1,3 @@
-import { calculateDistance } from "./Firework";
 import { Star } from "./Star";
 
 import {
@@ -6,15 +5,11 @@ import {
     GROUND_HEIGHT,
     SKY_GRADIENT_END_COLOR,
     SKY_GRADIENT_START_COLOR,
-    STAR_COLOR,
     STAR_COUNT,
-    STAR_MAX_SIZE,
+    STAR_MAX_RADIUS,
     STARS_MIN_DISTANCE_BETWEEN,
 } from "./constants";
-
-function clamp(x: number, min: number, max: number): number {
-    return Math.min(Math.max(x, min), max);
-}
+import { calculateDistance, clamp } from "./utils";
 
 type Point = [number, number];
 
@@ -38,13 +33,19 @@ export class Background {
             const randomY: number =
                 Math.floor(Math.random() * (this.context.canvas.height - GROUND_HEIGHT));
             const randomPoint: Point = [
-                clamp(randomX, 20, this.context.canvas.width - 20),
-                clamp(randomY, 20, this.context.canvas.height - GROUND_HEIGHT - 20),
+                clamp(
+                    randomX, STARS_MIN_DISTANCE_BETWEEN,
+                    this.context.canvas.width - STARS_MIN_DISTANCE_BETWEEN,
+                ),
+                clamp(
+                    randomY, STARS_MIN_DISTANCE_BETWEEN,
+                    this.context.canvas.height - GROUND_HEIGHT - STARS_MIN_DISTANCE_BETWEEN,
+                ),
             ];
             let usePoint: boolean = true;
             for (const existingPoint of points) {
                 if (calculateDistance(existingPoint[0], existingPoint[1],
-                        randomPoint[0], randomPoint[1]) < STARS_MIN_DISTANCE_BETWEEN) {
+                    randomPoint[0], randomPoint[1]) < STARS_MIN_DISTANCE_BETWEEN) {
                     usePoint = false;
                     break;
                 }
@@ -60,7 +61,7 @@ export class Background {
     private createStars(): void {
         const randomPoints: Point[] = this.generateRandomPointsForStars();
         for (const point of randomPoints) {
-            const radius: number = Math.ceil(Math.random() * STAR_MAX_SIZE);
+            const radius: number = Math.ceil(Math.random() * STAR_MAX_RADIUS);
             this.stars.push(new Star(this.context, point[0], point[1], radius));
         }
     }
@@ -69,14 +70,13 @@ export class Background {
         this.context.fillStyle = this.skyGradient;
         this.context.fillRect(0, 0, this.context.canvas.width, this.context.canvas.height);
 
-        this.context.fillStyle = STAR_COLOR;
         for (const star of this.stars) {
             star.draw();
         }
 
         this.context.fillStyle = GROUND_COLOR;
         this.context.shadowBlur = 0;
-        this.context.fillRect(0, this.context.canvas.height - GROUND_HEIGHT + 1,
-                              this.context.canvas.width, GROUND_HEIGHT);
+        this.context.fillRect(0, this.context.canvas.height - GROUND_HEIGHT,
+            this.context.canvas.width, GROUND_HEIGHT);
     }
 }

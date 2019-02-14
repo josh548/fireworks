@@ -12,20 +12,24 @@ import {
     PARTICLE_RADIUS,
     PARTICLES_PER_FIREWORK,
 } from "./constants";
+import { getRandomValueBetween } from "./utils";
 
-const canvas: HTMLCanvasElement = document.querySelector("canvas") as HTMLCanvasElement;
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+const canvas: HTMLCanvasElement = document.querySelector("canvas")!;
+canvas.width = window.innerWidth / window.devicePixelRatio;
+canvas.height = window.innerHeight / window.devicePixelRatio;
 
-const context: CanvasRenderingContext2D = canvas.getContext("2d") as CanvasRenderingContext2D;
+const computedWidth: number =
+    parseInt(getComputedStyle(canvas).getPropertyValue("width").slice(0, -2), 10);
+const computedHeight: number =
+    parseInt(getComputedStyle(canvas).getPropertyValue("height").slice(0, -2), 10);
+canvas.setAttribute("width", `${computedWidth * window.devicePixelRatio}px`);
+canvas.setAttribute("height", `${computedHeight * window.devicePixelRatio}px`);
+
+const context: CanvasRenderingContext2D = canvas.getContext("2d")!;
 context.lineCap = "round";
 context.lineJoin = "round";
 
 const background: Background = new Background(context);
-
-export function getRandomValueBetween(min: number, max: number): number {
-    return Math.random() * (max - min) + min;
-}
 
 let fireworks: Firework[] = [];
 let particles: Particle[] = [];
@@ -45,7 +49,7 @@ function createParticles(x: number, y: number): void {
         const velocity: number = Math.random() * PARTICLE_BASE_VELOCITY;
         const angle: number = Math.random() * Math.PI * 2;
         const hue: number = getRandomValueBetween(baseHue - PARTICLE_HUE_VARIANCE,
-                                                  baseHue + PARTICLE_HUE_VARIANCE);
+            baseHue + PARTICLE_HUE_VARIANCE);
         const lifeSpan: number = getRandomValueBetween(
             PARTICLE_BASE_LIFE_SPAN - PARTICLE_LIFE_SPAN_VARIANCE,
             PARTICLE_BASE_LIFE_SPAN + PARTICLE_LIFE_SPAN_VARIANCE);
@@ -83,10 +87,10 @@ function draw(): void {
     context.translate(canvas.width / 2, (canvas.height - GROUND_HEIGHT) / 2);
     context.rotate(textAngle);
     for (let i: number = 0; i < outerText.length; i++) {
-       context.save();
-       context.rotate(i * radiansPerCharacter);
-       context.fillText(outerText.charAt(i), 0, -100);
-       context.restore();
+        context.save();
+        context.rotate(i * radiansPerCharacter);
+        context.fillText(outerText.charAt(i), 0, -100);
+        context.restore();
     }
     context.restore();
     textAngle -= (2 * Math.PI) / 540;
